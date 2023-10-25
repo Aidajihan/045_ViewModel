@@ -19,6 +19,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -83,7 +84,7 @@ fun TampilLayout(modifier: Modifier = Modifier){
 }
 @OptIn (ExperimentalMaterial3Api::class)
 @Composable
-fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
+fun TampilForm(cobaViewModel: CobaViewModel = CobaViewModel()) {
     var textNama by remember { mutableStateOf("") }
     var textTlp by remember { mutableStateOf("") }
     val context = LocalContext.current
@@ -113,10 +114,12 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
         }
     )
 
+
     SelectJK (
-        options = jenis.map {id -> context.resources.getString(id)},
-        onSelectChange = {cobaViewModel.setJenisK(it)}
+        options = jenis.map { id -> context.resources.getString(id)},
+        onSelectionChanged = {cobaViewModel.setJenisK(it)}
     )
+
     Button(
         modifier = Modifier.fillMaxWidth(),
         onClick = {
@@ -139,8 +142,8 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
 
 @Composable
 fun SelectJK(
-    options: List<String>,
-    onSelectChange : (String) -> Unit = {}
+    options : List<String>,
+    onSelectionChanged : (String) -> Unit = {}
 ){
     var selectedValue by rememberSaveable { mutableStateOf("") }
     Column (modifier = Modifier.padding(16.dp)) {
@@ -150,7 +153,7 @@ fun SelectJK(
                     selected = selectedValue == item,
                     onClick = {
                         selectedValue = item
-                        onSelectChange(item)
+                        onSelectionChanged(item)
                     }
                 ),
                 verticalAlignment = Alignment.CenterVertically
@@ -160,7 +163,7 @@ fun SelectJK(
                     selected = selectedValue == item,
                     onClick = {
                         selectedValue = item
-                        onSelectChange(item)
+                        onSelectionChanged(item)
                     }
                 )
                 Text(item)
@@ -171,10 +174,12 @@ fun SelectJK(
 @Composable
 fun TextHasil(namanya : String, telponnya: String, jenisnya: String)
 {
-    Box (
+    ElevatedCard (
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        ),
         modifier = Modifier
-            .size(width = 300.dp, height = 100.dp)
-            .clip(RoundedCornerShape(8.dp))
+            .fillMaxWidth()
     ){
         Text(text = "Nama : " + namanya,
             modifier = Modifier
@@ -188,6 +193,9 @@ fun TextHasil(namanya : String, telponnya: String, jenisnya: String)
             modifier = Modifier
                 .padding(horizontal = 10.dp, vertical = 5.dp)
         )
+        Text(text = "Alamat :",
+            modifier = Modifier
+                .padding(horizontal = 10.dp, vertical = 5.dp))
     }
 }
 @Preview (showBackground = true)

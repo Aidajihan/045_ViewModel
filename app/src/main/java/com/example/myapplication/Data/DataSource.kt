@@ -4,7 +4,7 @@ import com.example.myapplication.R
 
 object DataSource {
     val jenis = listOf(
-       R.string.laki,
-        R.string.perempuan
+       R.string.Laki,
+        R.string.Perempuan,
     )
 }
