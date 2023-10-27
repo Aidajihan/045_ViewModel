@@ -77,7 +77,8 @@ fun TampilLayout(modifier: Modifier = Modifier){
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(20.dp)
-        ){
+        )
+        {
             TampilForm()
         }
     }
@@ -147,6 +148,11 @@ fun TampilForm(cobaViewModel: CobaViewModel = CobaViewModel()) {
         onSelectionChanged = {cobaViewModel.setJenisK(it)}
     )
 
+    SelectST (
+        options = jenis.map { id -> context.resources.getString(id) },
+        onSelectionChanged = {cobaViewModel.setStatus(it)}
+    )
+
     Button(
         modifier = Modifier.fillMaxWidth(),
         onClick = {
@@ -164,11 +170,14 @@ fun TampilForm(cobaViewModel: CobaViewModel = CobaViewModel()) {
     TextHasil(
         namanya = cobaViewModel.namaUsr,
         telponnya = cobaViewModel.noTlp ,
-        jenisnya = cobaViewModel.jenisKl,
         emailnya = cobaViewModel.Email,
         alamatnya = cobaViewModel.Alamat,
+        jenisnya = cobaViewModel.jenisKl,
+        statusnya =  cobaViewModel.Status,
+
     )
 }
+
 
 @Composable
 fun SelectJK(
@@ -201,8 +210,39 @@ fun SelectJK(
         }
     }
 }
+
 @Composable
-fun TextHasil(namanya : String, telponnya: String, jenisnya: String, emailnya: String, alamatnya: String)
+fun SelectST(
+    options: List<String>,
+    onSelectionChanged: (String) -> Unit = {}
+){
+    var selectedValue by rememberSaveable { mutableStateOf(" ")}
+    Column (modifier = Modifier.padding(16.dp)) {
+        options.forEach {item ->
+            Row (
+                modifier = Modifier.selectable(
+                    selected = selectedValue == item,
+                    onClick = {
+                        selectedValue = item
+                        onSelectionChanged (item)
+                    }
+                ),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                RadioButton(
+                    selected = selectedValue == item,
+                    onClick = {
+                        selectedValue = item
+                        onSelectionChanged(item)
+                    }
+                )
+                Text(item)
+            }
+        }
+    }
+}
+@Composable
+fun TextHasil(namanya : String, telponnya: String, emailnya: String, alamatnya: String, jenisnya: String, statusnya: String)
 {
     ElevatedCard (
         elevation = CardDefaults.cardElevation(
@@ -231,6 +271,10 @@ fun TextHasil(namanya : String, telponnya: String, jenisnya: String, emailnya: S
             modifier = Modifier
                 .padding(horizontal = 10.dp, vertical = 5.dp)
         )
+        Text(text = "Status : " + statusnya,
+            modifier = Modifier
+                .padding(horizontal = 10.dp, vertical = 5.dp)
+            )
 
     }
 }
