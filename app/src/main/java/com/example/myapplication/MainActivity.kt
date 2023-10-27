@@ -87,8 +87,9 @@ fun TampilLayout(modifier: Modifier = Modifier){
 fun TampilForm(cobaViewModel: CobaViewModel = CobaViewModel()) {
     var textNama by remember { mutableStateOf("") }
     var textTlp by remember { mutableStateOf("") }
-    var textEmail by remember { mutableStateOf("")
-    }
+    var textEmail by remember { mutableStateOf("") }
+    var textAlamat by remember { mutableStateOf("") }
+
     val context = LocalContext.current
     val dataForm : DataForm
     val uiState by cobaViewModel.uiState.collectAsState()
@@ -128,6 +129,18 @@ fun TampilForm(cobaViewModel: CobaViewModel = CobaViewModel()) {
         }
     )
 
+    OutlinedTextField(
+        value = textAlamat,
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "Alamat")},
+        onValueChange = {
+            textAlamat = it
+        }
+    )
+
 
     SelectJK (
         options = jenis.map { id -> context.resources.getString(id)},
@@ -137,7 +150,7 @@ fun TampilForm(cobaViewModel: CobaViewModel = CobaViewModel()) {
     Button(
         modifier = Modifier.fillMaxWidth(),
         onClick = {
-            cobaViewModel.insertData(textNama,textTlp,textEmail, dataForm.sex)
+            cobaViewModel.insertData(textNama,textTlp,textEmail,textAlamat, dataForm.sex)
         }
     ) {
         Text(
@@ -153,6 +166,7 @@ fun TampilForm(cobaViewModel: CobaViewModel = CobaViewModel()) {
         telponnya = cobaViewModel.noTlp ,
         jenisnya = cobaViewModel.jenisKl,
         emailnya = cobaViewModel.Email,
+        alamatnya = cobaViewModel.Alamat,
     )
 }
 
@@ -188,7 +202,7 @@ fun SelectJK(
     }
 }
 @Composable
-fun TextHasil(namanya : String, telponnya: String, jenisnya: String, emailnya: String)
+fun TextHasil(namanya : String, telponnya: String, jenisnya: String, emailnya: String, alamatnya: String)
 {
     ElevatedCard (
         elevation = CardDefaults.cardElevation(
@@ -209,13 +223,15 @@ fun TextHasil(namanya : String, telponnya: String, jenisnya: String, emailnya: S
             modifier = Modifier
                 .padding(horizontal = 10.dp, vertical = 5.dp)
         )
+        Text(text = "Alamat :",
+            modifier = Modifier
+                .padding(horizontal = 10.dp, vertical = 5.dp)
+        )
         Text(text = "Jenis Kelamin : " + jenisnya,
             modifier = Modifier
                 .padding(horizontal = 10.dp, vertical = 5.dp)
         )
-        Text(text = "Alamat :",
-            modifier = Modifier
-                .padding(horizontal = 10.dp, vertical = 5.dp))
+
     }
 }
 @Preview (showBackground = true)
